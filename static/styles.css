@@ -1,0 +1,42 @@
+.chat-box{
+    border: 2px;
+    border-style: double;
+    text-align: left;
+}
+h1{
+    text-align: center;
+    color: aqua;
+}
+p{
+    text-align: center;
+    color: cyan;
+}
+form {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+}
+#message-box{
+    text-align: left;
+}
+ul{
+    padding: 0;
+    list-style-type: none;
+}
+.user{
+    color: cyan;
+    font-weight: 400;
+    display: inline-block;
+}
+.time{
+    font-size: xx-small;
+    display: inline-block;
+}
+body{
+    background-color: black;
+    color: white;
+}
+.welcome-text{
+    font-size: 100px;
+    color: aqua;
+}

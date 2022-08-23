@@ -1,0 +1,11 @@
+bidict==0.22.0
+click==8.0.3
+Flask==2.0.2
+Flask-SocketIO==5.2.0
+itsdangerous==2.0.1
+Jinja2==3.0.2
+MarkupSafe==2.0.1
+python-engineio==4.3.3
+python-socketio==5.7.0
+six @ file:///AppleInternal/BuildRoot/Library/Caches/com.apple.xbs/Sources/python3/python3-110/six-1.15.0-py2.py3-none-any.whl
+Werkzeug==2.0.2

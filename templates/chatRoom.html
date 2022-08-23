@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Chat Room</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+    
+    $(document).ready(function() {
+         
+        let user = '{{ username1 }}';
+        console.log(user);
+
+        var socket = io.connect();
+
+        socket.on('connect', function() {
+            socket.emit("user_connected",user);
+        });
+        
+        socket.on('redirect', function (data) {
+            socket.disconnect();
+            window.location = data.url;
+        });
+
+        socket.on('send_message', function(data){
+            console.log(data);
+            $('#message-box').append("<li>" + "<div class = time > " + data.timestamp + '</div>' + ' - ' + "<div class = user> " + data.user + "</div>" + ': ' +  data.msg  + "</li>");
+        });
+
+        $('#send_message').on('click', function() {
+            if( $('#message').val() !== '' ){
+                socket.emit("send_message", $('#message').val(), user);
+                $('#message').val('');
+            }
+        });
+
+        $('.text-box').keypress(function() {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                if(  $('#message').val() !== ''){
+                    socket.emit("send_message", $('#message').val(), user);
+                    $('#message').val('');
+                }
+            }
+        });
+
+        $('#leave_room').on('click', function(){
+            socket.emit('redirect_to_home_page')
+        });
+
+    });
+    </script>
+
+    
+    <p> Welcome, {{username1}}</p>
+
+    <div class = "chat-box"> 
+        <ul class = "messages" id="message-box">
+        </ul>
+    </div>
+
+         
+    <input class = "text-box" type="text" id = "message" placeholder="Enter your Message" maxlength='150'>
+    <button type="button" id = "send_message">Send!</button>
+    <button type="button" id = 'leave_room'>Leave Room</button>
+
+</body>
+
+</html>
