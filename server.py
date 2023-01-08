@@ -24,21 +24,23 @@ def enterRoom(username):
     if request.method == 'GET':
         return render_template("chatRoom.html", username1 = username)
 
+
+
 #Tests to make sure connection is working
-@socketio.on('connect')
-def test_connect():
-    print('User has connected')
+@socketio.on('user_connected')
+def test_connect(user):
+    emit('user_connect',{'user':user}, broadcast=True)
 
 #server recieves message sent from client and emits timestamp and message to all clients
 @socketio.on('send_message')
 def handle_message(msg, user):
     today = datetime.now()
     message_timestamp = today.strftime("%m/%d %H:%M")
-    print()
-    print('received message from: ' + user + ' -- message: ' + msg + 'at timestamp: ' + message_timestamp)
-    print()
     emit('send_message',{'user':user, 'msg':msg, 'timestamp': message_timestamp},broadcast=True) #send is used to send messages emit is used for other data types
-    return redirect(url_for('home_page'))
+
+@socketio.on('user_left')
+def leaving_message(user):
+    emit('user_disconnect', {'user':user}, broadcast=True)
 
 #handles leaving a room
 @socketio.on('redirect_to_home_page')
@@ -47,7 +49,7 @@ def returnToHome():
 
 
 #stats server
-if __name__ == "__main__":
-    print("running on http://127.0.0.1:5000/ ")
-    print()
-    socketio.run(app, debug=True)
+# if __name__ == "__main__":
+#     print("running on http://127.0.0.1:5000/ ")
+#     print()
+#     socketio.run(app, debug=True)
