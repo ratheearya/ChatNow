@@ -28,6 +28,16 @@
         socket.on('connect', function() {
             socket.emit("user_connected",user);
         });
+
+        socket.on('user_connect', function(data){
+            console.log(data.user + "joined")
+            $("#message-box").append("<li>" + "<div class = user>" + data.user + "</div> has joined the chat </li>");
+        });
+
+        socket.on('user_disconnect', function(data){
+            console.log(data.user + "joined")
+            $("#message-box").append("<li>" + "<div class = user>" + data.user + "</div> has left the chat </li>");
+        });
         
         socket.on('redirect', function (data) {
             socket.disconnect();
@@ -57,7 +67,8 @@
         });
 
         $('#leave_room').on('click', function(){
-            socket.emit('redirect_to_home_page')
+            socket.emit('user_left', user);
+            socket.emit('redirect_to_home_page');
         });
 
     });
